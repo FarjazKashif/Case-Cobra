@@ -8,11 +8,13 @@ import React, { useState, useTransition } from 'react'
 import Dropzone, { FileRejection } from 'react-dropzone'
 import { useUploadThing } from '@/lib/uploadthing'
 import { useRouter } from 'next/navigation'
-import { useToast, toast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
+
 
 const Page = () => {
 
     const router = useRouter()
+    const { toast } = useToast()
 
     const { startUpload, isUploading } = useUploadThing("imageUploader", {
         onClientUploadComplete: ([data]) => {
@@ -31,19 +33,22 @@ const Page = () => {
 
         setIsDragOver(false)
 
-        toast({
-            title: `${file.file.type} type is not supported.`,
-            description: "Please choose a PNG, JPG, or JPEG image instead.",
-            variant: "destructive"
-        })
+        if (file) {
+            console.log("File type not supported:", file.file.type);
+            toast({
+                title: `${file.file.type} type is not supported.`,
+                description: "Please choose a PNG, JPG, or JPEG image instead.",
+                variant: "destructive"
+            });
+        }
     }
 
     const onDropAccepted = (acceptedFiles: File[]) => {
-        startUpload(acceptedFiles, {configId: undefined})
+        startUpload(acceptedFiles, { configId: undefined })
         setIsDragOver(false)
     }
 
-    const [isDragOver, setIsDragOver] = useState<boolean>(true)
+    const [isDragOver, setIsDragOver] = useState<boolean>(false)
     const [uploadProgress, setUploadProgress] = useState<number>(0)
     const [isPending, startTransition] = useTransition()
 
