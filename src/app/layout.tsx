@@ -6,12 +6,12 @@ import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster"
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "./fonts/VisbyMedium.otf",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "./fonts/VisbyBold.otf",
   variable: "--font-geist-mono",
   weight: "100 900",
 });

@@ -14,6 +14,24 @@
   }
 }
 
+@font-face {
+  font-family: 'Visby';
+  src: url('fonts/VisbyMedium.otf') format('otf'),
+       url('fonts/VisbyMedium.otf') format('otf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; /* Ensures text remains visible while the font is loading */
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('fonts/VisbyBold.otf') format('otf'),
+       url('fonts/VisbyBold.otf') format('otf');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
