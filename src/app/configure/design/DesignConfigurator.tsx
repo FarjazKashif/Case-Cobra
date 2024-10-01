@@ -16,9 +16,10 @@ import { Button } from "@/components/ui/button"
 import { ArrowRight, Check, ChevronsUpDown } from "lucide-react"
 import { BASE_PRICE } from "@/app/config/products"
 import { useToast } from "@/hooks/use-toast"
+import { useUploadThing } from "@/lib/uploadthing"
 
 interface DesignProps {
-    id: string,
+    configId: string,
     imageUrl: string,
     dimensions: { width: number, height: number }
 }
@@ -27,8 +28,8 @@ declare var myImage: {
     new(): HTMLImageElement;
 };
 
-const DesignConfigurator = ({ id, imageUrl, dimensions }: DesignProps) => {
-    const {toast} = useToast()
+const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => {
+    const { toast } = useToast()
     const [options, setOptions] = useState<{
         color: (typeof COLORS)[number],
         model: (typeof MODELS.options)[number],
@@ -53,6 +54,8 @@ const DesignConfigurator = ({ id, imageUrl, dimensions }: DesignProps) => {
 
     const phoneRef = useRef<HTMLDivElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
+
+    const { startUpload } = useUploadThing("imageUploader")
 
     async function saveConfiguration() {
         try {
@@ -80,8 +83,8 @@ const DesignConfigurator = ({ id, imageUrl, dimensions }: DesignProps) => {
             userImage.crossOrigin = "anonymous"
             userImage.src = imageUrl
 
-            await new Promise((resolve) => userImage.onload(resolve))            
-            
+            await new Promise((resolve) => (userImage.onload = resolve))
+
             ctx?.drawImage(
                 userImage,
                 actualX,
@@ -89,6 +92,13 @@ const DesignConfigurator = ({ id, imageUrl, dimensions }: DesignProps) => {
                 renderedDimensions.width,
                 renderedDimensions.height
             )
+
+            const base64 = canvas.toDataURL() // This method helps to Encode - means Convert to Writing Format
+            const base64Data = base64.split(',')[1]
+            const blob = base64toBlob(base64Data, "image/png")
+            const file = new File([blob], 'filename.png', { type: 'image/png' })
+            await startUpload([file], { configId })
+
         } catch (err) {
             toast({
                 title: "Something went wrong!!",
@@ -97,7 +107,19 @@ const DesignConfigurator = ({ id, imageUrl, dimensions }: DesignProps) => {
             })
         }
     }
-    { }
+
+    function base64toBlob(base64: string, mimeType: string) {
+        const byteCharacters = atob(base64) // Decode it into Binary data - Reading Format
+        const byteNumbers = new Array(byteCharacters.length)
+        for (let i = 0; i < byteCharacters.length; i++) {
+            // charcodeAt helps to convert each value into character code
+            // Here, we're saying that value in byteNumbers[index] = convert [index] into charcode, then equalizing it with same value of byteNumbers[index]
+            byteNumbers[i] = byteCharacters.charCodeAt(i)
+        }
+        const byteArray = new Uint8Array(byteNumbers) // UTF-16 unit code - Preparing binary data for further operations - Like for Uploads
+        return new Blob([byteArray], { type: mimeType })
+    }
+
     return (
         <div className='relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20'>
             <div ref={containerRef} className='relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'>
@@ -121,7 +143,19 @@ const DesignConfigurator = ({ id, imageUrl, dimensions }: DesignProps) => {
                         height: dimensions.height / 4,
                     }
                 }
-                    onResizeStop={(_, __, ref, ___, { x, y }) => { }}
+                    onResizeStop={(_, __, ref, ___, { x, y }) => { 
+                        setRenderedDimensions({
+                            width: parseInt(ref.style.width.slice(0, -2)),
+                            height: parseInt(ref.style.height.slice(0, -2)),
+                        })
+
+                        setRenderedPosition({x, y})
+                     }}
+
+                     onDragStop={(_, data) => {
+                        const {x, y} = data
+                        setRenderedPosition({x, y})
+                     }}
                     className='absolute z-20 border-[1px] border-dashed border-primary'
                     lockAspectRatio
                     resizeHandleComponent={{
