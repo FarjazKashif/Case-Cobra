@@ -4,7 +4,7 @@ import HandleComponent from "@/components/HandleComponent"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { cn, formatPrice } from "@/lib/utils"
-import Image from "next/image"
+import NextImage from "next/image"
 import { Rnd } from "react-rnd"
 import { Radio, RadioGroup } from '@headlessui/react'
 import { useRef, useState } from "react"
@@ -15,8 +15,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Check, ChevronsUpDown } from "lucide-react"
 import { BASE_PRICE } from "@/app/config/products"
-import { useToast } from "@/hooks/use-toast"
 import { useUploadThing } from "@/lib/uploadthing"
+import { useToast } from "@/hooks/use-toast"
+import { useMutation } from "@tanstack/react-query"
+
+import { saveConfig as _saveConfig, SaveConfigArgs } from "./actions"
+import { useRouter } from "next/navigation"
 
 interface DesignProps {
     configId: string,
@@ -24,12 +28,16 @@ interface DesignProps {
     dimensions: { width: number, height: number }
 }
 
-declare var myImage: {
+declare const myImage: {
     new(): HTMLImageElement;
 };
 
+
 const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => {
+
+    const router = useRouter()
     const { toast } = useToast()
+
     const [options, setOptions] = useState<{
         color: (typeof COLORS)[number],
         model: (typeof MODELS.options)[number],
@@ -57,56 +65,83 @@ const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => 
 
     const { startUpload } = useUploadThing("imageUploader")
 
+    const { mutate: saveConfig } = useMutation({
+        mutationKey: ["save-config"],
+        mutationFn: async (args: SaveConfigArgs) => {
+            await Promise.all([saveConfiguration(), _saveConfig(args)])
+        },
+        onError: () => {
+            toast({
+                title: "Something went wrong!",
+                description: "There is an issue with ConfigId.",
+                variant: "destructive"
+            })
+        },
+        onSuccess: () => {
+            router.push(`/configure/preview?id=${configId}`)
+        }
+    })
+
     async function saveConfiguration() {
         try {
-            // ! -> Means must have value
-            const { left: caseLeft, right: caseTop, width, height } = phoneRef.current!.getBoundingClientRect()
-            const { left: containerLeft, top: containerTop } = containerRef.current!.getBoundingClientRect()
+            const { left: caseLeft, top: caseTop, width, height } = phoneRef.current!.getBoundingClientRect();
+            const { left: containerLeft, top: containerTop } = containerRef.current!.getBoundingClientRect();
 
-            const leftOffset = caseLeft - containerLeft
-            const topOffset = caseTop - containerTop
+            const leftOffset = caseLeft - containerLeft;
+            const topOffset = caseTop - containerTop;
 
-            console.log(`Left Offset: ${leftOffset} & Top Offset: ${topOffset}`)
+            console.log(`Left Offset: ${leftOffset}, Top Offset: ${topOffset}`);
 
-            const actualX = renderedPosition.x - leftOffset
-            const actualY = renderedPosition.y - topOffset
+            const actualX = renderedPosition.x - leftOffset;
+            const actualY = renderedPosition.y - topOffset;
 
-            console.log(`X: ${actualX} & Y: ${actualY}`)
+            console.log(`Actual X: ${actualX}, Actual Y: ${actualY}`);
 
-            const canvas = document.createElement('canvas')
-            canvas.width = width
-            canvas.height = height
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
 
-            const ctx = canvas.getContext('2d')
+            const userImage = new window.Image();
+            userImage.crossOrigin = "anonymous";
+            userImage.src = imageUrl;
 
-            const userImage = new myImage();
-            userImage.crossOrigin = "anonymous"
-            userImage.src = imageUrl
+            await new Promise((resolve, reject) => {
+                userImage.onload = resolve;
+                userImage.onerror = reject;
+            });
 
-            await new Promise((resolve) => (userImage.onload = resolve))
+            console.log("Image loaded: ", userImage);
 
+            // Ensure image is drawn with correct coordinates and dimensions
+            console.log(`Drawing image at X: ${actualX}, Y: ${actualY}, Width: ${renderedDimensions.width}, Height: ${renderedDimensions.height}`);
             ctx?.drawImage(
                 userImage,
                 actualX,
                 actualY,
                 renderedDimensions.width,
                 renderedDimensions.height
-            )
+            );
 
-            const base64 = canvas.toDataURL() // This method helps to Encode - means Convert to Writing Format
-            const base64Data = base64.split(',')[1]
-            const blob = base64toBlob(base64Data, "image/png")
-            const file = new File([blob], 'filename.png', { type: 'image/png' })
-            await startUpload([file], { configId })
+            // Append canvas to body for testing
+            document.body.appendChild(canvas);
+
+            const base64 = canvas.toDataURL(); // This method helps to Encode - means Convert to Writing Format
+            const base64Data = base64.split(',')[1];
+            const blob = base64toBlob(base64Data, "image/png");
+            const file = new File([blob], 'filename.png', { type: 'image/png' });
+
+            await startUpload([file], { configId });
 
         } catch (err) {
             toast({
                 title: "Something went wrong!!",
-                description: "There is an Issue...",
+                description: `There is an Issue... + ${err}`,
                 variant: "destructive"
-            })
+            });
         }
     }
+
 
     function base64toBlob(base64: string, mimeType: string) {
         const byteCharacters = atob(base64) // Decode it into Binary data - Reading Format
@@ -125,7 +160,7 @@ const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => 
             <div ref={containerRef} className='relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'>
                 <div className='relative w-60 bg-opacity-50 pointer-events-none aspect-[896/1831]'>
                     <AspectRatio ref={phoneRef} ratio={896 / 1831} className='pointer-events-none relative z-50 aspect-[896/1831] w-full'>
-                        <Image src="/phone-template.png" alt="Image" className="pointer-events-none z-50 select-none" fill />
+                        <NextImage src="/phone-template.png" alt="Image" className="pointer-events-none z-50 select-none" fill />
                     </AspectRatio>
                     <div className='absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]' />
                     <div
@@ -143,19 +178,19 @@ const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => 
                         height: dimensions.height / 4,
                     }
                 }
-                    onResizeStop={(_, __, ref, ___, { x, y }) => { 
+                    onResizeStop={(_, __, ref, ___, { x, y }) => {
                         setRenderedDimensions({
                             width: parseInt(ref.style.width.slice(0, -2)),
                             height: parseInt(ref.style.height.slice(0, -2)),
                         })
 
-                        setRenderedPosition({x, y})
-                     }}
+                        setRenderedPosition({ x, y })
+                    }}
 
-                     onDragStop={(_, data) => {
-                        const {x, y} = data
-                        setRenderedPosition({x, y})
-                     }}
+                    onDragStop={(_, data) => {
+                        const { x, y } = data
+                        setRenderedPosition({ x, y })
+                    }}
                     className='absolute z-20 border-[1px] border-dashed border-primary'
                     lockAspectRatio
                     resizeHandleComponent={{
@@ -166,7 +201,7 @@ const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => 
                     }}
                 >
                     <div className='relative w-full h-full'>
-                        <Image
+                        <NextImage
                             src={imageUrl}
                             fill
                             alt='your image'
@@ -321,7 +356,13 @@ const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => 
                                 {formatPrice((BASE_PRICE + options.finish.price + options.material.price) / 100)}
                             </p>
                             <Button size='sm'
-                                onClick={() => saveConfiguration()}
+                                onClick={() => saveConfig({
+                                    color: options.color.value,
+                                    finish: options.finish.value,
+                                    material: options.material.value,
+                                    model: options.model.value,
+                                    configId: configId
+                                })}
                                 className='w-full'>
                                 Continue
                                 <ArrowRight className='h-4 w-4 ml-1.5 inline' />

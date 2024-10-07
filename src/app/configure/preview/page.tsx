@@ -1,17 +1,17 @@
 import { db } from "@/db"
 import { notFound } from "next/navigation"
-import DesignConfigurator from "./DesignConfigurator"
+import DesignPreview from "./DesignPreview"
 
-interface searchParamsProps {
+type PageProps = {
     searchParams: {
         [key: string]: string | string[] | undefined
     }
 }
 
-const Page = async ({ searchParams }: searchParamsProps) => {
+const Page = async ({ searchParams }: PageProps) => {
     const { id } = searchParams
 
-    if (!id || typeof id !== "string") {
+    if (!id || typeof id !== 'string') {
         return notFound()
     }
 
@@ -23,13 +23,7 @@ const Page = async ({ searchParams }: searchParamsProps) => {
         return notFound()
     }
 
-    const { imageUrl, height, width } = configuration
-
-    return <DesignConfigurator
-        imageUrl={imageUrl}
-        dimensions={{height, width}}
-        configId={configuration.id}
-    />
+    return <DesignPreview configuration={configuration} />
 }
 
 export default Page
