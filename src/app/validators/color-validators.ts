@@ -8,17 +8,20 @@ export const COLORS = [
     {
         label: 'Black',
         value: 'black',
-        tw: 'zinc-900'
+        tw: 'zinc-900',
+        code: '#18181B'
     },
     {
         label: 'Blue',
         value: 'blue',
         tw: 'blue-950',
+        code: '#0a0e1f'
     },
     {
         label: 'Rose',
         value: 'rose',
-        tw: 'rose-950'
+        tw: 'rose-950',
+        code: '#4c0519'
     },
 ] as const // ad const means value will never be 
 
