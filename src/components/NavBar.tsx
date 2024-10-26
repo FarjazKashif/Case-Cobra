@@ -21,6 +21,15 @@ const NavBar = async () => {
                     </Link>
 
                     <div className='h-full flex items-center space-x-4'>
+                        <Link
+                            href='/products'
+                            className={buttonVariants({
+                                size: 'sm',
+                                variant: 'ghost',
+                                className: "text-gray-900"
+                            })}>
+                            Products
+                        </Link>
                         {user ? (
                             <>
                                 <Link

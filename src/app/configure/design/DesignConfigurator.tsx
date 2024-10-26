@@ -340,7 +340,7 @@ M5910.000000,3238.000000
 </svg>
                     <AspectRatio ref={phoneRef} ratio={7234 / 7638} className='pointer-events-none relative z-50 aspect-[7234/7638] w-full'>
                         {/* <NextImage src="/phone-template.png" alt="Image" className="pointer-events-none z-50 select-none" fill /> */}
-                        <NextImage src="/t-shirt.png" alt="Image" className="pointer-events-none z-50 select-none h-[98%]" fill />
+                        <NextImage src="/t-shirt.png" alt="Image" className="pointer-events-none z-50 select-none h-full" fill />
                     </AspectRatio>
                     {/* <div className='absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]' /> */}
 

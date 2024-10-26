@@ -4,7 +4,7 @@ import Phone from "@/components/Phone";
 import Reviews from "@/components/Reviews";
 import { buttonVariants } from "@/components/ui/button";
 import { ArrowRight, Check, Star } from "lucide-react";
-import Image from "next/image";
+import NextImage from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
               <h1 className='relative w-fit tracking-tight text-balance mt-16 font-bold !leading-tight text-gray-900 text-5xl md:text-6xl lg:text-7xl'>
                 Your Image on a{' '}
                 <span className='bg-green-600 px-2 text-white'>Custom</span>{' '}
-                Phone Case
+                T-Shirt...
               </h1>
               <p className='mt-8 text-lg lg:pr-10 max-w-prose text-center text-gray-900 lg:text-left text-balance md:text-wrap'>
                 Capture your favorite memories with your own,{' '}
@@ -102,9 +102,10 @@ export default function Home() {
               />
               <img
                 src='/line.png'
-                className='absolute w-20 -left-6 -bottom-6 select-none'
+                className='absolute w-20 left-9 -bottom-6 select-none'
               />
-              <Phone className='w-64' imgSrc='/testimonials/1.jpg' />
+              {/* <Phone className='w-64' imgSrc='/testimonials/1.jpg' /> */}
+              <NextImage src="/M29.png" alt="Image" width={465} height={500} />
             </div>
           </div>
         </MaxWidthWrapper>
