@@ -14,7 +14,7 @@ import { SIZES } from '@/app/validators/color-validators';
 import { Tabs } from '@/components/ui/tabs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import { Check } from 'lucide-react';
+import { Check, Disc } from 'lucide-react';
 import Link from 'next/link';
 
 export interface ProductContent {
@@ -135,11 +135,22 @@ const ProductPage = ({ data }: ProductPageProps) => {
             ),
         },
         {
-            title: "Services",
-            value: "services",
+            title: "Return Conditions",
+            value: "return",
             content: (
-                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 flex items-start text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-                    <p>Services tab</p>
+                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl text-white bg-white shadow-xl">
+                    <div className='relative text-zinc-700 text-xl space-y-2'>
+                        <span className='text-zinc-950 font-bold text-lg'>Return Conditions:</span>
+                        <p className='text-zinc-800 text-sm'>Some of our items, due to their unique characteristics, must meet the following conditions in order to be returned:</p>
+                        <ul className='mt-3'>
+                            <li className='text-zinc-800 text-[16px] flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' /><p>Undergarments may be exchanged or returned provided they are in the same condition as when purchased.</p></li>
+                            <li className='text-zinc-800 text-[16px] flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' /><p>Items that are part of a pack cannot be returned separately.</p></li>
+                            <li className='text-zinc-800 text-[16px] flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' /><p>This must be returned with their original bag or cardboard intact. No altered belt will be exchanged or returned.</p></li>
+                            <li className='text-zinc-800 text-[16px] flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' /><p>This must be returned with their original bag or cardboard intact. No altered belt will be exchanged or returned.</p></li>
+                            <li className='text-zinc-800 text-[16px] flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' /><p>This must be returned with their original bag or cardboard intact. No altered belt will be exchanged or returned.</p></li>
+                            <li className='text-zinc-800 text-[16px] flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' /><p>This must be returned with their original bag or cardboard intact. No altered belt will be exchanged or returned.</p></li>
+                        </ul>
+                    </div>
                 </div>
             ),
         },
@@ -266,7 +277,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
                         <Tabs tabs={tabs} />
                     </div>
 
-                    <Swiper
+                    {/* <Swiper
                         modules={[Navigation, Pagination, Scrollbar, A11y]}
                         spaceBetween={50}
                         slidesPerView={3}
@@ -281,7 +292,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
                         <SwiperSlide>Slide 3</SwiperSlide>
                         <SwiperSlide>Slide 4</SwiperSlide>
                         ...
-                    </Swiper>
+                    </Swiper> */}
                 </MaxWidthWrapper>
             </section>
         </div>
