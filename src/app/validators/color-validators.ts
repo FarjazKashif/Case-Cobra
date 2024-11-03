@@ -25,6 +25,25 @@ export const COLORS = [
     },
 ] as const // ad const means value will never be 
 
+export const SIZES = [
+    {
+        label: 'Small',
+        value: 'sm',
+    },
+    {
+        label: 'Medium',
+        value: 'md',
+    },
+    {
+        label: 'Large',
+        value: 'lg',
+    },
+    {
+        label: 'XL',
+        value: 'xl',
+    },
+] as const // ad const means value will never be 
+
 export const MODELS = {
     name: 'models',
     options: [
