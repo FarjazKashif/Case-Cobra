@@ -12,6 +12,10 @@ import { ReactNode, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { SIZES } from '@/app/validators/color-validators';
 import { Tabs } from '@/components/ui/tabs';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Check } from 'lucide-react';
+import Link from 'next/link';
 
 export interface ProductContent {
     title: string;
@@ -36,59 +40,6 @@ interface BlockType {
 
 
 const ProductPage = ({ data }: ProductPageProps) => {
-    const [size, setSize] = useState<{ sizes: (typeof SIZES)[number] }>({
-        sizes: SIZES[0]
-    });
-    const [activeTab, setActiveTab] = useState(0);
-
-    // Tabs
-    const tabs = [
-        {
-            title: "Product",
-            value: "product",
-            content: (
-                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 flex items-start text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-                    <p>Product Tab</p>
-                </div>
-            ),
-        },
-        {
-            title: "Services",
-            value: "services",
-            content: (
-                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 flex items-start text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-                    <p>Services tab</p>
-                </div>
-            ),
-        },
-        {
-            title: "Playground",
-            value: "playground",
-            content: (
-                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 flex items-start text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-                    <p>Playground tab</p>
-                </div>
-            ),
-        },
-        {
-            title: "Content",
-            value: "content",
-            content: (
-                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 flex items-start text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-                    <p>Content tab</p>
-                </div>
-            ),
-        },
-        {
-            title: "Random",
-            value: "random",
-            content: (
-                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 flex items-start text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-                    <p>Random tab</p>
-                </div>
-            ),
-        },
-    ];
 
     const components: PortableTextComponents = {
         types: {
@@ -129,15 +80,81 @@ const ProductPage = ({ data }: ProductPageProps) => {
         },
     };
 
+    const [size, setSize] = useState<{ sizes: (typeof SIZES)[number] }>({
+        sizes: SIZES[0]
+    });
+    const [activeTab, setActiveTab] = useState(0);
+
+    // Tabs
+    const tabs = [
+        {
+            title: "Product Overview",
+            value: "product",
+            content: (
+                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl text-white bg-white shadow-xl">
+                    <div className='relative text-zinc-700 text-xl space-y-2'>
+                        <span className='text-zinc-950 font-bold text-lg'>Description:</span>
+
+                        {/* npm install @portabletext/react */}
+                        {data.content && data.content.length > 0 ? (
+                            <PortableText
+                                value={data.content}
+                                components={components}
+                            />
+                        ) : (
+                            <p>No content available</p>
+                        )}
+                    </div>
+
+                    <div className='grid lg:grid-cols-2 mt-8'>
+                        <div className='block'>
+                            <h3 className='text-zinc-950 font-bold text-lg'>Features:</h3>
+                            <ul className='mt-3'>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />High in Quality</li>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />Washable</li>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />Bright Color</li>
+                            </ul>
+                        </div>
+                        <div className='block'>
+                            <h3 className='text-zinc-950 font-bold text-lg'>Material Care:</h3>
+                            <ul className='mt-3'>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />Machine wash max. 30ºC. Short spin.</li>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />Iron maximum 110ºC.</li>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />Do not bleach/bleach.</li>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />Do not dry clean.</li>
+                                <li className='text-zinc-800 text-sm flex items-center'><Check className='w-4 h-4 mr-2 text-green-500' />Tumble dry, medium hear</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className='relative text-zinc-700 mt-5 text-xl space-y-2'>
+                        <span className='text-zinc-950 font-bold text-lg'>Note:</span>
+                        <p className='text-zinc-800 text-sm'>Is case if the product is damaged or has any issue, our coustomer support is available.</p>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            title: "Services",
+            value: "services",
+            content: (
+                <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 flex items-start text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
+                    <p>Services tab</p>
+                </div>
+            ),
+        },
+    ];
+
     return (
         <div className='bg-slate-50 grainy-light'>
             <section>
-                <MaxWidthWrapper className='pt-10 pb-32 sm:pb-12 lg:pt-24 xl:pt-32'>
+                <MaxWidthWrapper className='pt-10 pb-32 sm:pb-12 lg:pt-14 xl:pt-10'>
+                    <span className='text-zinc-500 text-sm block mt-5 mb-7'><Link href='/'>Home</Link> / <span className='text-zinc-950'>{data.currentSlug}</span></span>
                     <div className='grid grid-cols-2 gap-x-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 sm:gap-x-2 xl:gap-x-0'>
 
                         {/* Left Content */}
-                        <div className='px-5 py-2'>
-                            <Image className='object-cover rounded-2xl' src={urlFor(data.pd_image).url()} alt={data.title} width={700} height={700} />
+                        <div className='relative'>
+                            <Image className='object-cover h-[37.5rem]' src={urlFor(data.pd_image).url()} alt={data.title} width={700} height={700} />
                         </div>
 
                         {/* Right Content */}
@@ -243,9 +260,28 @@ const ProductPage = ({ data }: ProductPageProps) => {
                         </div>
                     </div>
 
-                    <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-8">
+                    <div className='w-full h-px bg-zinc-200 my-6' />
+
+                    <div className="h-[15rem] md:h-[28rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-8">
                         <Tabs tabs={tabs} />
                     </div>
+
+                    <Swiper
+                        modules={[Navigation, Pagination, Scrollbar, A11y]}
+                        spaceBetween={50}
+                        slidesPerView={3}
+                        navigation
+                        pagination={{ clickable: true }}
+                        scrollbar={{ draggable: true }}
+                        onSwiper={(swiper) => console.log(swiper)}
+                        onSlideChange={() => console.log('slide change')}
+                    >
+                        <SwiperSlide className='h-20 w-20 bg-black'>Slide 1</SwiperSlide>
+                        <SwiperSlide>Slide 2</SwiperSlide>
+                        <SwiperSlide>Slide 3</SwiperSlide>
+                        <SwiperSlide>Slide 4</SwiperSlide>
+                        ...
+                    </Swiper>
                 </MaxWidthWrapper>
             </section>
         </div>
