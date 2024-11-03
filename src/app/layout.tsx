@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Recursive, Acme } from 'next/font/google'
+import { Recursive, Roboto  } from 'next/font/google'
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster"
 import Providers from "@/components/Providers";
 
-const recursive = Recursive({ subsets: ['latin'] })
+const recursive = Recursive({ subsets: ['latin'], weight: ["300", "400", "500", "600", "700", "800", "900", "1000"] })
 
 export const metadata: Metadata = {
   title: "Create Next App",

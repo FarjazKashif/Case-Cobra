@@ -8,11 +8,13 @@ import { urlFor } from '@/sanity/lib/image';
 import { ArrowBigLeft, ArrowBigRight, ArrowLeft, ArrowLeftIcon, ArrowRight, ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import Link from 'next/link';
 
 export interface IProduct {
   title: string
   price: number
   image: string
+  currentSlug: string
   category: {
     category: string
   }
@@ -29,7 +31,8 @@ const getProductsData = async () => {
       image,
       category -> {
         category
-      }
+      },
+      "currentSlug": slug.current
     }`
   );
   return products;
@@ -96,24 +99,26 @@ const ProductsPage = () => {
               ))
             ) : (
               currentProducts.map((item, idx) => (
-                <div className='rounded-xl my-3 relative shadow-md hover:shadow-lg ease-in duration-100 backdrop-blur-lg bg-white/15 col-span-1' key={idx}>
-                  <div className='relative box-border overflow-hidden'>
-                    <Image className='ease-in-out duration-1000 hover:scale-110 object-contain h-[250px]' src={urlFor(item.image).url()} alt={item.title} width={300} height={300} />
-                  </div>
-                  <div className='px-3 py-3'>
-                    <div className='flex justify-between items-center pb-4'>
-                      <p className='text-xs text-rose-700'>{item.category.category.toLowerCase()}</p>
-                      <Button variant="outline" size="sm">
-                        <ShoppingCart className='h-4 w-4 text-green-700' />
-                      </Button>
+                <Link href={`products/${item.currentSlug}`} key={idx}>
+                  <div className='rounded-xl my-3 relative shadow-md hover:shadow-lg ease-in duration-100 backdrop-blur-lg bg-white/15 col-span-1'>
+                    <div className='relative box-border overflow-hidden'>
+                      <Image className='ease-in-out duration-1000 hover:scale-110 object-contain h-[250px]' src={urlFor(item.image).url()} alt={item.title} width={300} height={300} />
                     </div>
-                    <span className='text-zinc-900 text-md'>{item.title}</span>
-                    <div className='flex justify-between items-center pt-4'>
-                      <p className='text-zinc-900 text-sm'>Rs.{item.price}</p>
-                      <p className='text-green-700 text-sm'>25% off</p>
+                    <div className='px-3 py-3'>
+                      <div className='flex justify-between items-center pb-4'>
+                        <p className='text-xs text-rose-700'>{item.category.category.toLowerCase()}</p>
+                        <Button variant="outline" size="sm">
+                          <ShoppingCart className='h-4 w-4 text-green-700' />
+                        </Button>
+                      </div>
+                      <span className='text-zinc-900 text-md'>{item.title}</span>
+                      <div className='flex justify-between items-center pt-4'>
+                        <p className='text-zinc-900 text-sm'>Rs.{item.price}</p>
+                        <p className='text-green-700 text-sm'>25% off</p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))
             )}
           </div>
