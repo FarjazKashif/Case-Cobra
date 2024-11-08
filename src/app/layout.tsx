@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster"
 import Providers from "@/components/Providers";
+import { Toaster as SnToaster } from "@/components/ui/sonner"
 
 const recursive = Recursive({ subsets: ['latin'], weight: ["300", "400", "500", "600", "700", "800", "900", "1000"] })
 
@@ -34,6 +35,7 @@ export default function RootLayout({
       </main>
 
       <Toaster />
+      <SnToaster />
     </body>
     </html >
   );
