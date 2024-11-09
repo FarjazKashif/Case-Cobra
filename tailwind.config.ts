@@ -13,6 +13,8 @@ const config: Config = {
 			colors: {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				'brown-600': 'hsl(14 29% 25%)',
+				'brown-300': 'hsl(24 57% 41%)',
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'

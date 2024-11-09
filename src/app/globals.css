@@ -57,6 +57,9 @@ body {
     --input: 240 5.9% 90%;
     --ring: 142.1 76.2% 36.3%;
     --radius: 0.5rem;
+
+    /* Adding new color */
+    --new-color: 14 29% 25%; /* This is the HSL value for #4f332e */
   }
 
   .dark {
