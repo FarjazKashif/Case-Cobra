@@ -153,7 +153,7 @@ export default function Home() {
                   alt='user'
                 />
                 <div className='flex flex-col'>
-                  <p className='font-semibold'>Jonathan</p>
+                  <p className='font-semibold text-gray-800'>Jonathan</p>
                   <div className='flex gap-1.5 items-center text-zinc-600'>
                     <Check className='h-4 w-4 stroke-[3px] text-brown-600' />
                     <p className='text-sm'>Verified Purchase</p>
@@ -190,7 +190,7 @@ export default function Home() {
                   alt='user'
                 />
                 <div className='flex flex-col'>
-                  <p className='font-semibold'>Josh</p>
+                  <p className='font-semibold text-gray-800'>Josh</p>
                   <div className='flex gap-1.5 items-center text-zinc-600'>
                     <Check className='h-4 w-4 stroke-[3px] text-brown-600' />
                     <p className='text-sm'>Verified Purchase</p>

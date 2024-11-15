@@ -16,6 +16,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Check, Disc } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from "framer-motion";
+import { Lens } from "@/components/ui/lens";
 
 export interface ProductContent {
     title: string;
@@ -40,6 +42,8 @@ interface BlockType {
 
 
 const ProductPage = ({ data }: ProductPageProps) => {
+
+    const [hovering, setHovering] = useState(false);
 
     const components: PortableTextComponents = {
         types: {
@@ -165,12 +169,20 @@ const ProductPage = ({ data }: ProductPageProps) => {
 
                         {/* Left Content */}
                         <div className='relative'>
-                            <Image className='object-cover h-[37.5rem]' src={urlFor(data.pd_image).url()} alt={data.title} width={700} height={700} />
+                            <Lens hovering={hovering} setHovering={setHovering}>
+                                <Image className='object-cover h-[37.5rem] cursor-none' src={urlFor(data.pd_image).url()} alt={data.title} width={700} height={700} />
+                            </Lens>
                         </div>
 
                         {/* Right Content */}
 
                         {/* Customize Section */}
+                        <motion.div
+                            animate={{
+                                filter: hovering ? "blur(2px)" : "blur(0px)",
+                            }}
+                            className="relative z-20"
+                        >
                         <div className='h-[37.5rem] w-full col-span-full lg:col-span-1 flex flex-col bg-white'>
                             <ScrollArea className='relative flex-1 overflow-auto'>
                                 <div
@@ -269,6 +281,7 @@ const ProductPage = ({ data }: ProductPageProps) => {
                                 </div>
                             </ScrollArea>
                         </div>
+                        </motion.div>
                     </div>
 
                     <div className='w-full h-px bg-zinc-200 my-6' />
