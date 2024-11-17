@@ -160,10 +160,10 @@ const DesignConfigurator = ({ configId, imageUrl, dimensions }: DesignProps) => 
             <div ref={containerRef} className='relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'>
                 <div className='relative w-[34rem] bg-opacity-50 pointer-events-none aspect-[7234/7638]'>
 
-                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-	 width="100%" viewBox="0 0 7324 7638" enable-background="new 0 0 7324 7638" className="absolute inset-0">
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                        width="100%" viewBox="0 0 7324 7638" enable-background="new 0 0 7324 7638" className="absolute inset-0">
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M6.000000,3330.000000 
 	C19.513704,3327.635254 19.826893,3314.726074 23.670483,3305.857178 
 	C48.975674,3247.467285 73.333321,3188.666748 97.999985,3130.000000 
@@ -237,8 +237,8 @@ M6.000000,3330.000000
 	C184.597076,3388.860352 109.376488,3361.212646 33.915848,3334.235352 
 	C28.043898,3332.136230 22.035301,3331.262695 18.000000,3326.000000 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M914.000000,1238.000000 
 	C953.005005,1266.989258 982.969910,1304.190186 1009.979126,1344.014160 
 	C1081.619995,1449.645386 1129.985962,1566.395386 1171.836304,1686.057251 
@@ -255,8 +255,8 @@ M914.000000,1238.000000
 	C1449.647095,3698.676025 1452.117432,3757.329834 1453.871704,3816.003906 
 	C1454.130127,3824.642822 1455.771118,3833.572021 1452.000000,3842.000000 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M4750.000000,68.000000 
 	C4703.200195,183.313492 4629.401855,278.350159 4536.335938,360.381165 
 	C4439.145996,446.047089 4328.746582,508.888794 4209.859375,557.656860 
@@ -269,8 +269,8 @@ M4750.000000,68.000000
 	C2710.196289,312.855652 2645.114258,235.649353 2592.296875,147.821472 
 	C2578.981445,125.680077 2569.333252,101.333389 2558.000000,78.000053 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M6430.000000,1238.000000 
 	C6407.562012,1245.129395 6394.257812,1264.032471 6380.437988,1280.370239 
 	C6308.424316,1365.500732 6257.693359,1463.066772 6215.726562,1565.888428 
@@ -286,8 +286,8 @@ M6430.000000,1238.000000
 	C5918.581055,3164.536377 5917.241699,3189.328369 5915.991699,3213.999512 
 	C5915.644043,3220.855225 5917.841309,3228.234863 5912.000000,3234.000000 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M4582.000000,16.000000 
 	C4547.716797,76.686623 4501.409180,127.445709 4452.176758,176.178619 
 	C4366.315918,261.168091 4265.610840,323.439240 4155.890625,371.752136 
@@ -298,8 +298,8 @@ M4582.000000,16.000000
 	C3139.700439,349.088593 3047.491943,298.419861 2966.060059,229.928619 
 	C2948.010498,214.747559 2925.776367,204.020020 2914.000000,182.000000 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M4458.000000,164.000000 
 	C4431.627441,165.612259 4407.387207,176.240967 4382.069824,182.291534 
 	C4315.765625,198.137650 4249.257324,212.605484 4182.073730,224.419083 
@@ -314,8 +314,8 @@ M4458.000000,164.000000
 	C2868.718994,141.655029 2838.700684,110.179192 2813.929932,74.048050 
 	C2801.368408,55.725254 2784.325928,40.314209 2778.000000,18.000000 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M5906.000000,1698.000000 
 	C5903.017090,1703.742676 5904.042480,1709.949463 5904.025391,1716.000122 
 	C5903.329102,1958.666626 5902.666504,2201.333252 5902.003906,2444.000000 
@@ -323,21 +323,21 @@ M5906.000000,1698.000000
 	C5906.253418,2717.990234 5902.954102,2966.000977 5904.046875,3213.999756 
 	C5904.077148,3220.854492 5902.158691,3228.234863 5908.000000,3234.000000 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.000000"
+                            d="
 M1432.000000,1698.000000 
 	C1435.856934,2077.327637 1434.188599,2456.668701 1433.380737,2835.998779 
 	C1433.159302,2939.984131 1433.078003,3044.002686 1431.989258,3148.000000 
 	C1431.923706,3154.264160 1433.276733,3160.876221 1428.000000,3166.000000 
 "/>
-<path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
-	d="
+                        <path fill={options.color.code} opacity="1.000000" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.000000"
+                            d="
 M5910.000000,3238.000000 
 	C5906.666504,3330.666748 5904.829590,3423.418701 5899.540039,3515.973633 
 	C5895.083496,3593.958008 5893.683105,3672.017578 5889.807617,3749.990479 
 	C5888.313477,3780.049072 5886.324707,3810.000000 5890.000000,3840.000000 
 "/>
-</svg>
+                    </svg>
                     <AspectRatio ref={phoneRef} ratio={7234 / 7638} className='pointer-events-none relative z-50 aspect-[7234/7638] w-full'>
                         {/* <NextImage src="/phone-template.png" alt="Image" className="pointer-events-none z-50 select-none" fill /> */}
                         <NextImage src="/t-shirt.png" alt="Image" className="pointer-events-none z-50 select-none h-full" fill />

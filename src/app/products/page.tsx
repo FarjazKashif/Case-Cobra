@@ -1,6 +1,5 @@
 'use client';
 
-import { useCart } from '@/components/context/CartContext'; // Import the cart context
 import React, { useState, useEffect } from 'react';
 import { client } from '@/sanity/lib/client';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
@@ -19,10 +18,13 @@ export interface IProduct {
   title: string;
   price: number;
   image: string;
+  quantity: number;
   currentSlug: string;
   category: {
     category: string;
   };
+  color?: string;
+  size?: string
 }
 
 // Products per page
@@ -45,7 +47,6 @@ const getProductsData = async (category: string | null = null) => {
 };
 
 const ProductsPage = () => {
-  // const { cartItems, addToCart, removeFromCart } = useCart();
   const [data, setData] = useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -78,6 +79,14 @@ const ProductsPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
     }
+  };
+
+  const addToCart = (product: IProduct) => {
+    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const updatedCart = [...existingCart, product];
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+
+    // toast(`${product.title} added to cart!`);
   };
 
   return (
@@ -200,7 +209,11 @@ const ProductsPage = () => {
                           description: "Successfully Added!!",
                           style: { backgroundColor: 'white', color: "black" }
                         });
-                      }}>
+
+                        addToCart(item)
+                      }}
+                        disabled={cartItems.some((cartItem) => cartItem.currentSlug === item.currentSlug)}
+                      >
                         <ShoppingCart className='h-4 w-4 text-brown-300' />
                       </Button>
                     </div>
