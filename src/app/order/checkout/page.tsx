@@ -16,15 +16,24 @@ const CheckoutPage = () => {
     // Load cart from localStorage on initial render
     useEffect(() => {
         const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-        console.log("Stored Cart:", storedCart);
-        setCartItems(storedCart);
-        setQuantities(storedCart.map(() => 1));
+
+        if (storedCart.length > 0) {
+            setCartItems(storedCart);
+            console.log('Stored Cart:', storedCart);
+        }
+
+        const storedQuantities = JSON.parse(localStorage.getItem('quantities') || '[]');
+        const initialQuantities = storedQuantities.length === storedCart.length
+            ? storedQuantities
+            : storedCart.map(() => 1);
+
+        setQuantities(initialQuantities);
     }, []);
 
     // Update quantities when cart items or quantities change
     useEffect(() => {
-        console.log("Cart Items:", cartItems);
-        console.log("Quantities:", quantities);
+        localStorage.setItem('cart', JSON.stringify(cartItems));
+        localStorage.setItem('quantities', JSON.stringify(quantities));
     }, [cartItems, quantities]);
 
     // Remove item from cart
@@ -36,38 +45,28 @@ const CheckoutPage = () => {
         localStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
-    // Increase or decrease quantity
     const handleQuantityChange = (index: number, value: number) => {
-        const updatedQuantities = [...quantities];
-        updatedQuantities[index] = Math.max(1, value); // Ensure quantity is at least 1
-        setQuantities(updatedQuantities);
-    };
-
-    // Clear cart
-    const handleClearCart = () => {
-        setCartItems([]);
-        setQuantities([]);
-        localStorage.removeItem('cart');
-    };
-
-    // Add product to the cart or update quantity if already present
-    const handleAddToCart = (product: IProduct) => {
-        // Check if product already exists in the cart
-        const existingProductIndex = cartItems.findIndex((item) => item.title === product.title);
-
-        if (existingProductIndex >= 0) {
-            // If product exists, update the quantity
-            const updatedQuantities = [...quantities];
-            updatedQuantities[existingProductIndex] += 1;  // Increase quantity
-            setQuantities(updatedQuantities);
-        } else {
-            // If product doesn't exist, add it to the cart
-            setCartItems([...cartItems, product]);
-            setQuantities([...quantities, 1]); // Add with quantity 1
+        if (isNaN(value) || value < 1) {
+            return; // Prevent invalid values
         }
 
-        // Store cart in localStorage
-        localStorage.setItem('cart', JSON.stringify(cartItems));
+        setQuantities((prevQuantities) => {
+            const updatedQuantities = [...prevQuantities];
+            updatedQuantities[index] = value;
+            return updatedQuantities;
+        });
+    };
+
+
+    const calculateSubtotal = (price: string | number, quantity: number) => {
+        return Number(price) * quantity;
+    };
+
+    // Calculate total price for all items
+    const calculateTotal = () => {
+        return cartItems.reduce((total, item, index) => {
+            return total + calculateSubtotal(item.price, quantities[index] || 1);
+        }, 0);
     };
 
     return (
@@ -105,7 +104,8 @@ const CheckoutPage = () => {
                                                         src={urlFor(item.image).url()}
                                                         className="object-contain bg-gray-100 rounded-md"
                                                         alt="Product Image"
-                                                        fill
+                                                        height={500}
+                                                        width={500}
                                                     />
                                                 </div>
                                                 <span className="text-zinc-800 text-lg">{item.title}</span>
@@ -124,7 +124,7 @@ const CheckoutPage = () => {
                                                 </button>
                                                 <input
                                                     type="text"
-                                                    value={quantities[index] || 1}
+                                                    value={quantities[index] !== undefined ? quantities[index] : 1}
                                                     onChange={(e) => handleQuantityChange(index, parseInt(e.target.value, 10))}
                                                     className="w-16 px-3 py-2 text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
                                                     min="1"
@@ -138,7 +138,8 @@ const CheckoutPage = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            {(item.price) * (quantities[index] || 1)} PKR
+                                            {calculateSubtotal(item.price, quantities[index] || 1)} PKR
+
                                         </td>
                                         <td className="px-6 py-4">
                                             <XIcon
@@ -152,15 +153,16 @@ const CheckoutPage = () => {
                         </table>
                     </div>
                     <div className="mt-6">
-                        {/* <Button variant="destructive" onClick={handleClearCart}>
-                            Clear Cart
-                        </Button> */}
-                        <Button variant="default" onClick={() => {
-                            startTransition(() => {
-                                router.push(`/order/shipping`)
-                            })
-                        }}>
-                            Checkout
+                        <h3 className="text-xl font-semibold text-zinc-900">Total: {calculateTotal()} PKR</h3>
+                        <Button
+                            variant="default"
+                            onClick={() => {
+                                startTransition(() => {
+                                    router.push(`/order/shipping`);
+                                });
+                            }}
+                        >
+                            Proceed to Checkout
                         </Button>
                     </div>
                 </div>

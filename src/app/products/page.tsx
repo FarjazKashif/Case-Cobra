@@ -64,6 +64,13 @@ const ProductsPage = () => {
     fetchData();
   }, [selectedCategory]);
 
+  useEffect(() => {
+    const storedCart = localStorage.getItem('cart');
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
+    }
+  }, []);
+
   // Pagination logic
   const indexOfLastProduct = currentPage * PRODUCTS_PER_PAGE;
   const indexOfFirstProduct = indexOfLastProduct - PRODUCTS_PER_PAGE;
@@ -82,10 +89,10 @@ const ProductsPage = () => {
   };
 
   const addToCart = (product: IProduct) => {
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const updatedCart = [...existingCart, product];
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-
+    const updatedCart = [...cartItems, product];
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));  // Save to localStorage
+    console.log(localStorage.getItem('cart'));
     // toast(`${product.title} added to cart!`);
   };
 
@@ -99,7 +106,7 @@ const ProductsPage = () => {
               <p className='text-white text-sm mt-2'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident enim recusandae excepturi praesentium.</p>
             </div>
             <div className='relative box-border'>
-              <Image className='absolute right-0 -top-[123px] shadow-lg' src="/model.png" width={400} height={500} alt='Model' />
+              <Image className='absolute right-0 -top-[123px]' src="/model.png" width={400} height={500} alt='Model' />
             </div>
           </div>
 
@@ -166,7 +173,7 @@ const ProductsPage = () => {
                     ))
                   )}
                 </ScrollArea>
-                <Link href="/checkout">
+                <Link href="/order/checkout">
                   <Button className="text-lg font-semibold text-zinc-900 mt-4">
                     Proceed to Checkout
                   </Button>
