@@ -90,3 +90,7 @@ const Shipping = () => {
 }
 
 export default Shipping
+
+function saveConfiguration(): any {
+  throw new Error('Function not implemented.');
+}

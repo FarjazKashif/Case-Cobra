@@ -2,158 +2,177 @@
 
 import React, { useState } from "react";
 import { Button } from "./ui/button";
+import router from 'next/router';
+import { saveConfig, SaveConfigArgs } from "@/app/order/shipping/action"
+import { useMutation } from '@tanstack/react-query';
+import { toast, useToast } from "@/hooks/use-toast"
+import { PrismaClient } from "@prisma/client";
 
 const CheckoutForm = () => {
+
+  const prisma = new PrismaClient();
+
   const [formData, setFormData] = useState({
     name: "",
     address: "",
     city: "",
-    state: "",
     zip: "",
     phone: "",
     email: "",
-    notes: ""
+    notes: "",
   });
 
+  // Handler to update state when input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
+    setFormData({
+      ...formData,
       [name]: value,
-    }));
+    });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // const saveConfiguration = async (data: typeof formData) => {
+  //   try {
+  //     const result = await prisma.shippingAddress.create({
+  //       data: {
+  //         name: formData.name,
+  //         street: formData.address,
+  //         city: formData.city,
+  //         postalCode: formData.zip,
+  //         phoneNumber: formData.phone,
+  //         email: formData.email,
+  //         notes: formData.notes,
+  //       },
+  //     });
+  //     return result; // Optional: Return the saved data
+  //   } catch (error) {
+  //     console.error("Error saving configuration:", error);
+  //     throw new Error("Failed to save configuration");
+  //   }
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      console.log("Submitting form data:", formData);
+      // Directly call the saveConfig function
+      await saveConfig({
+        name: formData.name,
+        street: formData.address,
+        city: formData.city,
+        email: formData.email,
+        postalCode: formData.zip,
+        phoneNumber: formData.phone,
+        notes: formData.notes
       });
 
-      if (response.ok) {
-        alert("Thank you! Your order has been submitted.");
-        // Reset form data after successful submission
-        setFormData({
-          name: "",
-          address: "",
-          city: "",
-          state: "",
-          zip: "",
-          phone: "",
-          email: "",
-          notes: "",
-        });
-      } else {
-        alert("Failed to submit the order. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error submitting order:", error);
-      alert("An error occurred. Please try again.");
+      toast({
+        title: "Success!",
+        description: "Your order has been saved successfully.",
+        variant: "default",
+      });
+
+      // Optionally clear the form
+      setFormData({
+        name: "",
+        address: "",
+        city: "",
+        zip: "",
+        phone: "",
+        email: "",
+        notes: "",
+      });
+    } catch (error: any) {
+      console.error("Error saving order:", error);
+
+      toast({
+        title: "Something went wrong!",
+        description: error.message || "Failed to save the order. Please try again.",
+        variant: "destructive",
+      });
     }
   };
-  
+
   return (
     <div className="mx-auto mt-8">
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            {/* <label htmlFor="name" className="block text-sm font-medium text-zinc-800">
-            Full Name
-          </label> */}
             <input
               type="text"
               id="name"
               name="name"
-              value={formData.name}
-              onChange={handleChange}
               required
               placeholder="Full Name"
               className="w-full border border-gray-500 p-5 text-zinc-900"
+              value={formData.name}
+              onChange={handleChange}
             />
           </div>
 
           <div>
-            {/* <label htmlFor="address" className="block text-sm font-medium text-zinc-800">
-            Address
-          </label> */}
             <input
               type="text"
               id="address"
               name="address"
-              value={formData.address}
-              onChange={handleChange}
               required
               placeholder="Street Address"
               className="w-full border border-gray-500 p-5 text-zinc-900"
+              value={formData.address}
+              onChange={handleChange}
             />
           </div>
 
           <div>
-            {/* <label htmlFor="city" className="block text-sm font-medium text-zinc-800">
-            City
-          </label> */}
             <input
               type="text"
               id="city"
               name="city"
-              value={formData.city}
-              onChange={handleChange}
               required
               placeholder="City"
               className="w-full border border-gray-500 p-5 text-zinc-900"
+              value={formData.city}
+              onChange={handleChange}
             />
           </div>
 
           <div>
-            {/* <label htmlFor="zip" className="block text-sm font-medium text-zinc-800">
-              ZIP Code
-            </label> */}
             <input
               type="text"
               id="zip"
               name="zip"
-              value={formData.zip}
-              onChange={handleChange}
               required
               placeholder="Postal / Zip Code"
               className="w-full border border-gray-500 p-5 text-zinc-900"
+              value={formData.zip}
+              onChange={handleChange}
             />
           </div>
 
           <div>
-            {/* <label htmlFor="phone" className="block text-sm font-medium text-zinc-800">
-            Phone Number
-          </label> */}
             <input
               type="tel"
               id="phone"
               name="phone"
-              value={formData.phone}
-              onChange={handleChange}
               required
               placeholder="Phone"
               className="w-full border border-gray-500 p-5 text-zinc-900"
+              value={formData.phone}
+              onChange={handleChange}
             />
           </div>
 
           <div>
-            {/* <label htmlFor="phone" className="block text-sm font-medium text-zinc-800">
-            Phone Number
-          </label> */}
             <input
               type="email"
               id="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
               required
               placeholder="Email"
               className="w-full border border-gray-500 p-5 text-zinc-900"
+              value={formData.email}
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -162,12 +181,12 @@ const CheckoutForm = () => {
           <textarea
             id="notes"
             name="notes"
-            value={formData.notes}
-            onChange={handleChange}
             placeholder="Add any special instructions for delivery (Optional)..."
             rows={4}
             cols={8}
             className="w-full border border-gray-500 p-5 mt-5 text-zinc-900"
+            value={formData.notes}
+            onChange={handleChange}
           />
         </div>
 
@@ -184,3 +203,7 @@ const CheckoutForm = () => {
 };
 
 export default CheckoutForm;
+function saveConfiguration(): any {
+  throw new Error("Function not implemented.");
+}
+

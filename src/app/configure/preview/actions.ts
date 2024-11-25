@@ -42,6 +42,8 @@ export const createCheckOutSession = async ({ configId }: { configId: string }) 
         }
     })
 
+
+
     if (existingOrder) {
         order = existingOrder
     } else {
@@ -54,4 +56,4 @@ export const createCheckOutSession = async ({ configId }: { configId: string }) 
         })
     }
 
-}
+} 

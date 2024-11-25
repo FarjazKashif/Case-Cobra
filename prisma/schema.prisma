@@ -1,3 +1,6 @@
+// After changes
+// npx prisma migrate dev --name init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -84,9 +87,10 @@ model ShippingAddress {
   name        String
   street      String
   city        String
+  email       String
   postalCode  String
-  country     String
   phoneNumber String?
+  notes       String
   orders      Order[]
 }
 

@@ -5,8 +5,9 @@ import { IProduct } from "@/app/products/page";
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { urlFor } from '@/sanity/lib/image';
-import { XIcon } from 'lucide-react';
+import { ArrowRight, XIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation'
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const CheckoutPage = () => {
     const [cartItems, setCartItems] = useState<IProduct[]>([]);
@@ -57,6 +58,24 @@ const CheckoutPage = () => {
         });
     };
 
+    // Update the + button logic to directly increment the quantity in state
+    const handleIncrement = (index: number) => {
+        setQuantities((prevQuantities) => {
+            const updatedQuantities = [...prevQuantities];
+            updatedQuantities[index] = prevQuantities[index] + 1;
+            return updatedQuantities;
+        });
+    };
+
+    // Update the - button logic to directly decrement the quantity in state
+    const handleDecrement = (index: number) => {
+        setQuantities((prevQuantities) => {
+            const updatedQuantities = [...prevQuantities];
+            updatedQuantities[index] = Math.max(1, prevQuantities[index] - 1); // Ensure minimum of 1
+            return updatedQuantities;
+        });
+    };
+
 
     const calculateSubtotal = (price: string | number, quantity: number) => {
         return Number(price) * quantity;
@@ -82,88 +101,98 @@ const CheckoutPage = () => {
                     }}>Explore Products</Button>
                 </>
             ) : (
-                <div>
-                    <div className="relative overflow-x-auto">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead className="text-xs text-gray-700 uppercase bg-white border-b dark:border-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" className="px-6 py-3 text-lg">Product</th>
-                                    <th scope="col" className="px-6 py-3 text-lg">Price</th>
-                                    <th scope="col" className="px-6 py-3 text-lg">Quantity</th>
-                                    <th scope="col" className="px-6 py-3 text-lg">Subtotal</th>
-                                    <th scope="col" className="px-6 py-3"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cartItems.map((item, index) => (
-                                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <td scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            <div className="flex items-center space-x-3">
-                                                <div className="relative h-32 w-32">
-                                                    <Image
-                                                        src={urlFor(item.image).url()}
-                                                        className="object-contain bg-gray-100 rounded-md"
-                                                        alt="Product Image"
-                                                        height={500}
-                                                        width={500}
-                                                    />
-                                                </div>
-                                                <span className="text-zinc-800 text-lg">{item.title}</span>
-                                                <span className="text-zinc-800 text-lg">{item.size}</span>
-                                                <span className="text-zinc-800 text-lg">{item.color}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">{item.price} PKR</td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center border-2 border-gray-300 w-[100px] overflow-hidden">
-                                                <button
-                                                    onClick={() => handleQuantityChange(index, quantities[index] - 1)}
-                                                    className="w-6 h-10 flex items-center justify-center text-xl text-zinc-800 transition duration-200"
-                                                >
-                                                    -
-                                                </button>
-                                                <input
-                                                    type="text"
-                                                    value={quantities[index] !== undefined ? quantities[index] : 1}
-                                                    onChange={(e) => handleQuantityChange(index, parseInt(e.target.value, 10))}
-                                                    className="w-16 px-3 py-2 text-center text-lg font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out"
-                                                    min="1"
-                                                />
-                                                <button
-                                                    onClick={() => handleQuantityChange(index, quantities[index] + 1)}
-                                                    className="w-6 h-10 flex items-center justify-center text-xl text-zinc-800 transition duration-200"
-                                                >
-                                                    +
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            {calculateSubtotal(item.price, quantities[index] || 1)} PKR
-
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <XIcon
-                                                className="w-5 h-5 cursor-pointer text-zinc-500"
-                                                onClick={() => handleRemoveItem(index)}
-                                            />
-                                        </td>
+                <div className='h-[30.5rem] w-full col-span-full lg:col-span-1 flex flex-col bg-white'>
+                    <ScrollArea className='relative flex-1 overflow-auto'>
+                        <div
+                            aria-hidden='true'
+                            className='absolute z-10 inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white pointer-events-none'
+                        />
+                        <div className="relative overflow-x-auto">
+                            <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead className="text-xs text-gray-700 uppercase bg-white border-b dark:border-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3 text-lg">Product</th>
+                                        <th scope="col" className="px-6 py-3 text-lg">Price</th>
+                                        <th scope="col" className="px-6 py-3 text-lg">Quantity</th>
+                                        <th scope="col" className="px-6 py-3 text-lg">Subtotal</th>
+                                        <th scope="col" className="px-6 py-3"></th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className="mt-6">
-                        <h3 className="text-xl font-semibold text-zinc-900">Total: {calculateTotal()} PKR</h3>
-                        <Button
-                            variant="default"
-                            onClick={() => {
-                                startTransition(() => {
-                                    router.push(`/order/shipping`);
-                                });
-                            }}
-                        >
-                            Proceed to Checkout
-                        </Button>
+                                </thead>
+                                <tbody>
+                                    {cartItems.map((item, index) => (
+                                        <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                            <td scope="row" className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="relative h-32 w-32">
+                                                        <Image
+                                                            src={urlFor(item.image).url()}
+                                                            className="object-contain bg-gray-100 rounded-md"
+                                                            alt="Product Image"
+                                                            height={500}
+                                                            width={500}
+                                                        />
+                                                    </div>
+                                                    <span className="text-zinc-800 text-lg">{item.title}</span>
+                                                    <span className="text-zinc-800 text-lg">{item.size}</span>
+                                                    <span className="text-zinc-800 text-lg">{item.color}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">{item.price} PKR</td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center border-2 border-gray-300 w-[100px] overflow-hidden">
+                                                    <button
+                                                        onClick={() => handleDecrement(index)}
+                                                        className="w-6 h-10 flex items-center z-50 justify-center text-xl text-zinc-800 transition duration-200"
+                                                    >
+                                                        -
+                                                    </button>
+                                                    <input
+                                                        type="number"
+                                                        value={quantities[index] || 1}
+                                                        onChange={(e) => handleQuantityChange(index, parseInt(e.target.value, 10))}
+                                                        className="w-16 px-3 py-2 text-center text-lg font-medium focus:outline-none transition duration-200 ease-in-out"
+                                                        min="1"
+                                                    />
+                                                    <button
+                                                        onClick={() => handleIncrement(index)}
+                                                        className="w-6 h-10 flex items-center z-50 justify-center text-xl text-zinc-800 transition duration-200"
+                                                    >
+                                                        +
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                {calculateSubtotal(item.price, quantities[index] || 1)} PKR
+
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <XIcon
+                                                    className="w-5 h-5 cursor-pointer text-zinc-500"
+                                                    onClick={() => handleRemoveItem(index)}
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </ScrollArea>
+                    <div className='h-px w-full bg-zinc-200' />
+                    <div className=' h-24 w-full flex justify-between items-center'>
+                        <div className='w-full flex gap-6 items-center px-4'>
+                            <h3 className="text-xl font-semibold text-zinc-900">Total: {calculateTotal()} PKR</h3>
+                            <Button
+                                variant="default"
+                                onClick={() => {
+                                    startTransition(() => {
+                                        router.push(`/order/shipping`);
+                                    });
+                                }}
+                            >
+                                Proceed to Checkout
+                                <ArrowRight className='h-4 w-4 ml-1.5 inline' />
+                            </Button>
+                        </div>
                     </div>
                 </div>
             )}
