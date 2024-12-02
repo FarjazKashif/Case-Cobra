@@ -9,6 +9,7 @@ import { urlFor } from '@/sanity/lib/image';
 const Shipping = () => {
 
   const [cartItems, setCartItems] = useState<IProduct[]>([]);
+  const [price, setPrice] = useState(0)
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem('cart') || '[]');
@@ -22,15 +23,17 @@ const Shipping = () => {
     setCartItems(updatedCart);
   }, []);
 
-  const calculateTotal = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0) + 100;
-  };
+  // Calculate total price when cartItems change
+  useEffect(() => {
+    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0) + 100;
+    setPrice(total);
+  }, [cartItems]);
 
   return (
     <div className='relative mt-20 grid grid-cols-1 gap-x-4 lg:grid-cols-5 mb-20 pb-20'>
       <div className='relative h-[37.5rem] overflow-hidden col-span-3 w-full max-w-4xl'>
         <h3 className="text-3xl font-bold mb-6 text-zinc-900">Billing Details</h3>
-        <CheckoutForm />
+        <CheckoutForm cart={cartItems} price={price} />
       </div>
       <div className='relative h-fit overflow-hidden col-span-2 bg-white border border-zinc-900 p-5'>
         <h3 className="text-2xl font-bold mb-6 text-zinc-900">Order Details</h3>
@@ -74,7 +77,7 @@ const Shipping = () => {
             <hr className="my-4" />
             <div className="flex justify-between items-center mt-3">
               <p className="text-lg font-bold text-zinc-900">Total</p>
-              <p className="text-lg font-bold text-zinc-900">{calculateTotal()} PKR</p>
+              <p className="text-lg font-bold text-zinc-900">{price} PKR</p>
             </div>
             <hr className="my-4" />
           </div>

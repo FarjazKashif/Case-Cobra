@@ -7,8 +7,12 @@ import { saveConfig, SaveConfigArgs } from "@/app/order/shipping/action"
 import { useMutation } from '@tanstack/react-query';
 import { toast, useToast } from "@/hooks/use-toast"
 import { PrismaClient } from "@prisma/client";
+import { IProduct } from "@/app/products/page";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ cart, price }: {
+  cart: IProduct[],
+  price: number,
+}) => {
 
   const prisma = new PrismaClient();
 
@@ -64,7 +68,8 @@ const CheckoutForm = () => {
         email: formData.email,
         postalCode: formData.zip,
         phoneNumber: formData.phone,
-        notes: formData.notes
+        notes: formData.notes,
+        orders: cart
       });
 
       toast({

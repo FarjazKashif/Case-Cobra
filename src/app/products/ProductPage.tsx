@@ -18,6 +18,7 @@ import { Check, Disc } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from "framer-motion";
 import { Lens } from "@/components/ui/lens";
+import { Button } from '@/components/ui/button';
 
 export interface ProductContent {
     title: string;
@@ -275,6 +276,8 @@ const ProductPage = ({ data }: ProductPageProps) => {
                                                         ))}
                                                     </div>
                                                 </RadioGroup>
+
+                                                <Button>Add to Cart</Button>
                                             </div>
                                         </div>
                                     </div>
