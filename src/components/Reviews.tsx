@@ -5,14 +5,25 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import { useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Phone from "./Phone";
+import Image from "next/image";
 
 const PHONES = [
-    '/testimonials/1.jpg',
-    '/testimonials/2.jpg',
-    '/testimonials/3.jpg',
-    '/testimonials/4.jpg',
-    '/testimonials/5.jpg',
-    '/testimonials/6.jpg'
+    // '/testimonials/1.jpg',
+    // '/testimonials/2.jpg',
+    // '/testimonials/3.jpg',
+    // '/testimonials/4.jpg',
+    // '/testimonials/5.jpg',
+    // '/testimonials/6.jpg'
+    '/collections/polos/01.jpg',
+    '/collections/polos/001.jpg',
+    '/collections/polos/02.jpg',
+    '/collections/polos/002.jpg',
+    '/collections/polos/03.jpg',
+    '/collections/polos/003.jpg',
+    '/collections/polos/04.jpg',
+    '/collections/polos/004.jpg',
+    '/collections/polos/05.jpg',
+    '/collections/polos/005.jpg',
 ]
 
 function splitArray<T>(array: Array<T>, numParts: number) {
@@ -48,13 +59,14 @@ function Review({ imgSrc, className, ...props }: ReviewProps) {
     return (
         <div
             className={cn(
-                'animate-fade-in rounded-[2.25rem] bg-white p-6 opacity-0 shadow-xl shadow-slate-900/5',
+                // shadow-xl shadow-slate-900/5
+                'animate-fade-in rounded-[2.25rem] bg-white opacity-0',
                 className
             )}
             style={{ animationDelay }}
             {...props}
         >
-            <Phone imgSrc={imgSrc} />
+            <Image src={imgSrc} alt="designs" width={450} height={450}/>
         </div>
     )
 }
@@ -118,7 +130,7 @@ function ReviewGrid() {
     return (
         <div
             ref={containerRef}
-            className='relative -mx-4 mt-16 grid h-[49rem] max-h-[150vh] grid-cols-1 items-start gap-8 overflow-hidden px-4 sm:mt-20 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3'>
+            className='relative -mx-4 mt-16 grid h-[49rem] max-h-[150vh] grid-cols-1 items-start gap-5 overflow-hidden px-4 sm:mt-20 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3'>
             {isInView ?
                 <>
                     <ReviewColumn
@@ -146,19 +158,19 @@ function ReviewGrid() {
                     />
                 </>
                 : null}
-            <div className='pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-slate-100' />
-            <div className='pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-100' />
+            <div className='pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-slate-100/50' />
+            <div className='pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-100/50' />
         </div>
     )
 }
 
 export default function Reviews() {
     return (
-        <MaxWidthWrapper className='relative max-w-5xl'>
+        <MaxWidthWrapper className='relative'>
             <img
                 aria-hidden='true'
                 src='/what-people-are-buying.png'
-                className='absolute select-none hidden xl:block -left-32 top-1/3'
+                className='absolute select-none hidden xl:block h-[7rem] w-[7rem] left-[20px] rotate-45 -top-[7rem]'
             />
 
             <ReviewGrid />

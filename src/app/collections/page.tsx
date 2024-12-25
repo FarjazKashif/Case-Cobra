@@ -13,6 +13,7 @@ import { Sheet, SheetContent, SheetClose, SheetTrigger } from '@/components/ui/s
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/ShadcnTabs/tabs';
+import { Icons } from '@/components/Icons';
 
 export interface IProduct {
   title: string;
@@ -100,18 +101,95 @@ const ProductsPage = () => {
     // grainy-light
     <div className='bg-white '>
       <section>
-        <MaxWidthWrapper className='pt-10 pb-32 sm:pb-12 lg:pt-24 xl:pt-32'>
-          <div className='relative bg-brown-300 w-full h-36 rounded-3xl pb-32 grid xl:grid-cols-2 shadow-lg'>
-            <div className='px-10 py-2'>
-              <h2 className='text-2xl font-bold text-white'>Get Premium Quality T-Shirts...</h2>
-              <p className='text-white text-sm mt-2'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident enim recusandae excepturi praesentium.</p>
-            </div>
-            <div className='relative box-border'>
-              <Image className='absolute right-0 -top-[123px]' src="/model.png" width={400} height={500} alt='Model' />
-            </div>
+        <MaxWidthWrapper className='pt-10 pb-32 gap-8 sm:pb-12'>
+          <div className=''>
+            <h2 className='order-1 mt-2 tracking-tight text-center text-balance !leading-tight font-bold text-3xl md:text-5xl text-gray-900'>
+              <span className='relative px-2'>
+                COLLECTION{'  '}
+                <Icons.underline className='hidden sm:block pointer-events-none absolute inset-x-0 -bottom-6 text-brown-300' />
+              </span>{' '}
+            </h2>
+            <p className="flex-row text-gray-800 text-center text-sm mt-5">Preserving the legacy of sophistication, rooted in old money tradition.</p>
           </div>
 
-          <div className='flex justify-between mt-10 mb-6'>
+          <div className='mx-auto mt-8 grid max-w-2xl grid-cols-1 px-4 lg:mx-0 lg:max-w-none lg:grid-cols-3 gap-y-5'>
+            <Link href="/collections/polos">
+              <div className="flex flex-auto relative flex-col lg:pr-2 gap-1 overflow-hidden group">
+                <Image
+                  alt="Polos"
+                  src="/collections/polos.jpg"
+                  width={450}
+                  height={450}
+                  className="transition-transform duration-1000 ease-in-out group-hover:scale-110 object-cover"
+                />
+                <p className="absolute bottom-3 left-4 font-light">Polos</p>
+                <p className="absolute bottom-3 right-5 font-light"><ArrowRight className="h-5 w-5 transition-transform duration-500 ease-in-out font-light group-hover:translate-x-3" /></p>
+              </div>
+            </Link>
+
+            <div className="flex flex-auto relative flex-col lg:pr-2 gap-1 overflow-hidden group">
+              <Image
+                alt="Shirts"
+                src="/collections/shirts.jpg"
+                width={450}
+                height={450}
+                className="transition-transform duration-1000 ease-in-out group-hover:scale-110 object-cover"
+              />
+              <p className="absolute bottom-3 left-4 font-light">Shirts</p>
+              <p className="absolute bottom-3 right-5 font-light"><ArrowRight className="h-5 w-5 transition-transform duration-500 ease-in-out font-light group-hover:translate-x-3" /></p>
+            </div>
+
+            <div className="flex flex-auto relative flex-col lg:pr-2 gap-1 overflow-hidden group">
+              <Image
+                alt="Sweaters"
+                src="/collections/sweatshirts.jpg"
+                width={450}
+                height={450}
+                className="transition-transform duration-1000 ease-in-out group-hover:scale-110 object-cover"
+              />
+              <p className="absolute bottom-3 left-4 font-light">Sweaters</p>
+              <p className="absolute bottom-3 right-5 font-light"><ArrowRight className="h-5 w-5 transition-transform duration-500 ease-in-out font-light group-hover:translate-x-3" /></p>
+            </div>
+
+            <div className="flex flex-auto relative flex-col lg:pr-2 gap-1 overflow-hidden group">
+              <Image
+                alt="Hoodies"
+                src="/collections/hoodies.jpg"
+                width={450}
+                height={450}
+                className="transition-transform duration-1000 ease-in-out group-hover:scale-110 object-cover"
+              />
+              <p className="absolute bottom-3 left-4 font-light">Hoodies</p>
+              <p className="absolute bottom-3 right-5 font-light"><ArrowRight className="h-5 w-5 transition-transform duration-500 ease-in-out font-light group-hover:translate-x-3" /></p>
+            </div>
+
+            <div className="flex flex-auto relative flex-col lg:pr-2 gap-1 overflow-hidden group">
+              <Image
+                alt="Hoodies"
+                src="/collections/coats.jpg"
+                width={450}
+                height={450}
+                className="transition-transform duration-1000 ease-in-out group-hover:scale-110 object-cover"
+              />
+              <p className="absolute bottom-3 left-4 font-light">Coats</p>
+              <p className="absolute bottom-3 right-5 font-light"><ArrowRight className="h-5 w-5 transition-transform duration-500 ease-in-out font-light group-hover:translate-x-3" /></p>
+            </div>
+
+            <div className="flex flex-auto relative flex-col lg:pr-2 gap-1 overflow-hidden group">
+              <Image
+                alt="Hoodies"
+                src="/collections/outfits.jpg"
+                width={450}
+                height={450}
+                className="transition-transform duration-1000 ease-in-out group-hover:scale-110 object-cover"
+              />
+              <p className="absolute bottom-3 left-4 font-light">Outfits</p>
+              <p className="absolute bottom-3 right-5 font-light"><ArrowRight className="h-5 w-5 transition-transform duration-500 ease-in-out font-light group-hover:translate-x-3" /></p>
+            </div>
+
+          </div>
+
+          {/* <div className='flex justify-between mt-10 mb-6'>
             <Tabs defaultValue="All" className="w-[600px]">
               <TabsList className="grid w-fit gap-x-1 grid-cols-5 bg-gray-200/35 rounded-lg p-1">
                 {['All', 'T-Shirt', 'Polos', 'Hoodies', 'Sweat Shirts'].map((cat) => (
@@ -234,17 +312,17 @@ const ProductsPage = () => {
                 </div>
               ))
             )}
-          </div>
+          </div> */}
         </MaxWidthWrapper>
 
-        <div className="flex justify-center space-x-4 my-2">
+        {/* <div className="flex justify-center space-x-4 my-2">
           <Button className='text-zinc-950 text-xs' variant="ghost" size="sm" onClick={handlePrevPage} disabled={currentPage === 1}>
             <ArrowLeft className='w-5 h-5' />
           </Button>
           <Button className='text-zinc-950 text-xs' variant="ghost" size="sm" onClick={handleNextPage} disabled={indexOfLastProduct >= data.length}>
             <ArrowRight className='w-5 h-5' />
           </Button>
-        </div>
+        </div> */}
       </section>
     </div>
   );
