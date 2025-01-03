@@ -24,22 +24,22 @@ const NavBar = async () => {
                     <div></div>
                     <div className='h-full flex items-center space-x-4'>
                         <Link
-                            href='/products'
+                            href='/collections/polos'
                             className="text-gray-800 hover:font-bold transition-all font-light">
                             Polos
                         </Link>
                         <Link
-                            href='/products'
+                            href='/collections/sweatshirts'
                             className="text-gray-800 hover:font-bold transition-all font-light">
                             Sweatshirts
                         </Link>
                         <Link
-                            href='/products'
+                            href='/collections/hoodies'
                             className="text-gray-800 hover:font-bold transition-all font-light">
                             Hoodies
                         </Link>
                         <Link
-                            href='/products'
+                            href='/collections/tshirts'
                             className="text-gray-800 hover:font-bold transition-all font-light">
                             T-Shirts
                         </Link>

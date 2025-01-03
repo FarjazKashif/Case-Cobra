@@ -8,7 +8,7 @@ import Providers from "@/components/Providers";
 import { Toaster as SnToaster } from "@/components/ui/sonner"
 import { CartProvider } from '@/components/context/CartContext';
 
-const recursive = Recursive({ subsets: ['latin'], weight: ["300", "400", "500"] })
+const recursive = Recursive({ subsets: ['latin'], weight: ["300", "400", "500",] })
 
 export const metadata: Metadata = {
   title: "Create Next App",

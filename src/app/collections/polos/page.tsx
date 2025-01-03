@@ -124,10 +124,10 @@ const Polos = () => {
                             currentProducts.map((item, idx) => (
                                 <div key={idx} className='my-3 relative col-span-1'>
                                     <Link href={`/collections/polos/${item.currentSlug}`}>
-                                        <div className="relative box-border overflow-hidden group w-[287px] h-[300px]">
+                                        <div className="relative box-border overflow-hidden group w-[287px] h-[400px]">
                                             {/* First Image */}
                                             <Image
-                                                className="absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+                                                className="absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0"
                                                 src={urlFor(item.pd_image).url()}
                                                 alt={item.title}
                                                 width={300}

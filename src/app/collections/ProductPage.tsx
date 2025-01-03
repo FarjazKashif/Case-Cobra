@@ -14,7 +14,7 @@ import { SIZES } from '@/app/validators/color-validators';
 import { Tabs } from '@/components/ui/tabs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
-import { Check, Disc } from 'lucide-react';
+import { Check, Disc, MinusIcon, PlusIcon } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from "framer-motion";
 import { Lens } from "@/components/ui/lens";
@@ -26,6 +26,7 @@ export interface ProductContent {
     pd_image: any;
     image: string;
     currentSlug: string;
+    discount: string;
     category: { category: string };
     content?: any[];
     pd_type: { pd_type: string };
@@ -161,11 +162,13 @@ const ProductPage = ({ data }: ProductPageProps) => {
         },
     ];
 
+    const [incVal, setIncVal] = useState(12);
+
     return (
-        <div className='bg-slate-50 grainy-light'>
+        <div className='bg-white'>
             <section>
                 <MaxWidthWrapper className='pt-10 pb-32 sm:pb-12 lg:pt-14 xl:pt-10'>
-                    <span className='text-zinc-500 text-sm block mt-5 mb-7'><Link href='/'>Home</Link> / <span className='text-zinc-950'>{data.currentSlug}</span></span>
+                    <span className='text-zinc-500 text-sm block mt-5 mb-7'><Link href='/'>Home</Link> / <span className='text-zinc-950'>{data.category.category} / {data.currentSlug}</span></span>
                     <div className='grid grid-cols-2 gap-x-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 sm:gap-x-2 xl:gap-x-0'>
 
                         {/* Left Content */}
@@ -199,16 +202,89 @@ const ProductPage = ({ data }: ProductPageProps) => {
                                         aria-hidden='true'
                                         className='absolute z-10 inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white pointer-events-none'
                                     />
-                                    <div className='px-8 pb-12 pt-8'>
-                                        <h2 className='tracking-tight font-bold text-3xl text-zinc-700 uppercase'>
+                                    <div className='px-8 pb-4 pt-8'>
+                                        <h2 className='tracking-tight text-2xl text-zinc-900 uppercase'>
                                             {data.title}
                                         </h2>
-                                        <div className='w-full h-px bg-zinc-200 my-6' />
 
-                                        <div className='py-2'>
+                                        <div className='py-1'>
                                             <div className='block'>
-                                                <p className='text-zinc-700 uppercase text-xl'><span className='text-zinc-950 font-bold text-lg'>PKR </span>{data.price}</p>
+                                                <span className='text-zinc-700'>
+                                                    {data.discount ? (
+                                                        <p className='text-zinc-900'>Rs.{Number(data.price - (data.price * data.discount / 100)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {data.discount} % off</p>
+                                                    ) : <p className='text-zinc-900'>Rs.{Number(data.price).toLocaleString()}.00</p>}
+                                                </span>
                                             </div>
+
+                                            <div className='w-full h-px bg-zinc-200 my-4' />
+
+                                            <div className='relative mt-4 h-full flex flex-col justify-between'>
+                                                <div className='flex flex-col gap-6'>
+                                                    <RadioGroup value={size.sizes} onChange={(val) => {
+                                                        setSize((prev) => ({
+                                                            ...prev, // We're getting the previous value over here when we're setOptions. Then we are passing all the prev values..
+                                                            sizes: val
+                                                        }))
+                                                    }}>
+                                                        <Label className="text-zinc-600"><span className='text-zinc-950'>Size: </span>{size.sizes.label}</Label>
+                                                        <div className='mt-3 flex items-center space-x-3'>
+                                                            {SIZES.map((size) => (
+                                                                <Radio
+                                                                    value={size}
+                                                                    key={size.label}
+                                                                    className={({ checked, focus }) => cn(
+                                                                        checked ? 'text-zinc-800 relative border border-black -m-0.5 flex cursor-pointer items-center justify-center px-2 py-1 active:ring-0 active:font-bold focus:text-zinc-800' : 'relative px-2 py-1 -m-0.5 flex cursor-pointer items-center justify-center text-zinc-800 border border-gray',
+                                                                    )}
+                                                                >
+                                                                    <span className="text-sm uppercase">{size.value}</span>
+                                                                </Radio>
+                                                            ))}
+                                                        </div>
+                                                    </RadioGroup>
+                                                </div>
+                                            </div>
+
+
+                                            <form className="max-w-xs mt-4">
+                                                <label
+                                                    htmlFor="counter-input"
+                                                    className="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
+                                                >
+                                                    Quantity:
+                                                </label>
+                                                <div className="relative flex items-center border w-fit p-2">
+                                                    {/* Minus Button */}
+                                                    <button
+                                                        type="button"
+                                                        id="decrement-button"
+                                                        onClick={() => setIncVal((val) => Math.max(0, val - 1))}
+                                                        className="flex-shrink-0 inline-flex items-center justify-center h-5 w-5 focus:outline-none"
+                                                    >
+                                                        <MinusIcon className="w-3 h-3 text-gray-900 dark:text-white" />
+                                                    </button>
+
+                                                    {/* Input Field */}
+                                                    <input
+                                                        type="text"
+                                                        id="counter-input"
+                                                        className="text-center max-w-[2.5rem] text-sm font-normal border-0 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:ring-0"
+                                                        value={incVal}
+                                                        readOnly
+                                                    />
+
+                                                    {/* Plus Button */}
+                                                    <button
+                                                        type="button"
+                                                        id="increment-button"
+                                                        onClick={() => setIncVal((val) => val + 1)}
+                                                        className="flex-shrink-0 inline-flex items-center justify-center h-5 w-5 focus:outline-none"
+                                                    >
+                                                        <PlusIcon className="w-3 h-3 text-gray-900 dark:text-white" />
+                                                    </button>
+                                                </div>
+                                            </form>
+
+
                                             <div className='block mt-8 text-zinc-700 text-xl space-y-2'>
                                                 <span className='text-zinc-950 font-bold text-lg'>Description:</span>
 
@@ -261,33 +337,6 @@ const ProductPage = ({ data }: ProductPageProps) => {
                                                     </table>
                                                 </div>
 
-                                            </div>
-                                            <div className='relative mt-8 h-full flex flex-col justify-between'>
-                                                <div className='flex flex-col gap-6'>
-                                                    <RadioGroup value={size.sizes} onChange={(val) => {
-                                                        setSize((prev) => ({
-                                                            ...prev, // We're getting the previous value over here when we're setOptions. Then we are passing all the prev values..
-                                                            sizes: val
-                                                        }))
-                                                    }}>
-                                                        <Label className="text-zinc-700 text-lg"><span className='text-zinc-950 font-bold'>Size: </span>{size.sizes.label}</Label>
-                                                        <div className='mt-3 flex items-center space-x-3'>
-                                                            {SIZES.map((size) => (
-                                                                <Radio
-                                                                    value={size}
-                                                                    key={size.label}
-                                                                    className={({ checked, focus }) => cn(
-                                                                        checked ? 'text-green-500 relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 active:ring-0 focus:text-green-500 active:text-green-500 font-bold' : 'relative -m-0.5 flex cursor-pointer items-center justify-center text-zinc-950',
-                                                                    )}
-                                                                >
-                                                                    <span className="text-sm uppercase">{size.value}</span>
-                                                                </Radio>
-                                                            ))}
-                                                        </div>
-                                                    </RadioGroup>
-
-                                                    <Button>Add to Cart</Button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
